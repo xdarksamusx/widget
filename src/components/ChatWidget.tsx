@@ -3,6 +3,7 @@ import { ResizableBox } from "react-resizable";
 import "react-resizable/css/styles.css";
 import CloseButton from "./CloseButton";
 import { useAPIContext } from "../context/APIContext";
+import { Rnd } from "react-rnd";
 
 const ChatWidget = () => {
   const bottomRef = useRef<HTMLLIElement | null>(null);
@@ -42,36 +43,6 @@ const ChatWidget = () => {
     setFormData({ prompt: "" });
   };
 
-  // Drag logic
-  let startX = 0;
-  let startY = 0;
-
-  const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
-    startX = e.clientX;
-    startY = e.clientY;
-
-    const handleMouseMove = (moveEvent: MouseEvent) => {
-      const dx = moveEvent.clientX - startX;
-      const dy = moveEvent.clientY - startY;
-
-      setPosition((prev) => ({
-        x: Math.min(Math.max(0, prev.x + dx), window.innerWidth - 300),
-        y: Math.min(Math.max(0, prev.y + dy), window.innerHeight - 200),
-      }));
-
-      startX = moveEvent.clientX;
-      startY = moveEvent.clientY;
-    };
-
-    const handleMouseUp = () => {
-      document.removeEventListener("mousemove", handleMouseMove);
-      document.removeEventListener("mouseup", handleMouseUp);
-    };
-
-    document.addEventListener("mousemove", handleMouseMove);
-    document.addEventListener("mouseup", handleMouseUp);
-  };
-
   return (
     <div className="relative">
       <button
@@ -80,71 +51,78 @@ const ChatWidget = () => {
       ></button>
 
       {isOpen && (
-        <div
-          style={{
-            position: "absolute",
-            top: `${position.y}px`,
-            left: `${position.x}px`,
-          }}
-          onMouseDown={handleMouseDown}
-        >
-          <ResizableBox
-            width={300}
-            height={200}
-            resizeHandles={["s", "w", "e", "n", "sw", "nw", "se", "ne"]}
-            minConstraints={[200, 100]}
-            maxConstraints={[window.innerWidth, window.innerHeight]}
+        <div className="h-full w-full p-2 box-border">
+          <div
+            style={{
+              position: "absolute",
+              top: `${position.y}px`,
+              left: `${position.x}px`,
+            }}
           >
-            <div className="bg-white shadow-md rounded-lg flex flex-col h-full w-full">
-              <div className="bg-red-600 drag-handle w-full h-6 flex items-center justify-end text-white px-2 cursor-move">
-                <CloseButton onClick={handleCloseButton} />
-              </div>
+            <Rnd
+              default={{
+                x: 150,
+                y: 205,
+                width: 500,
+                height: 190,
+              }}
+              minWidth={500}
+              minHeight={190}
+              bounds="window"
+            >
+              <div className="bg-white shadow-md rounded-lg flex flex-col h-full w-full">
+                <div className="bg-red-600 drag-handle w-full h-6 flex items-center justify-end text-white px-2 cursor-move">
+                  <CloseButton onClick={handleCloseButton} />
+                </div>
 
-              <form onSubmit={handleSubmit} className="px-4 mt-2">
-                <input
-                  name="prompt"
-                  value={formData.prompt}
-                  onChange={handleChange}
-                  placeholder="Enter a disclaimer topic"
-                  className="w-36 border rounded py-1 px-2 mb-2"
-                />
-                <button className="bg-blue-600 text-white px-3 py-1 rounded ml-2">
-                  Generate
-                </button>
-              </form>
+                <form onSubmit={handleSubmit} className="px-4 mt-2">
+                  <input
+                    name="prompt"
+                    value={formData.prompt}
+                    onChange={handleChange}
+                    placeholder="Enter a disclaimer topic"
+                    className="w-36 border rounded py-1 px-2 mb-2"
+                  />
+                  <button className="bg-blue-600 text-white px-3 py-1 rounded ml-2">
+                    Generate
+                  </button>
+                </form>
 
-              <div className="flex-grow overflow-y-auto scroll-smooth my-2 px-2 box-border">
-                {messages.filter((m) => m.role !== "system").length === 0 ? (
-                  <ul className="flex flex-col gap-2 w-full px-4">
-                    <li className="text-gray-500 text-center italic px-4 w-full max-w-[95%] min-h-[100vh] py-2 rounded-lg text-sm shadow-sm">
-                      No conversation yet. Start by entering a topic.
-                    </li>
-                  </ul>
-                ) : (
-                  <ul className="flex flex-col gap-2 w-full px-4">
-                    {messages.map((msg, i) => {
-                      const isLast =
-                        i === messages.length - 1 && msg.role === "assistant";
-                      return (
-                        <li
-                          key={msg.content}
-                          ref={isLast ? bottomRef : null}
-                          className={`w-full max-w-[95%] px-4 py-2 rounded-lg text-sm shadow-sm ${
-                            msg.role === "user" ? "bg-blue-100" : "bg-gray-100"
-                          }`}
-                        >
-                          <strong className="block text-gray-700 mb-1">
-                            {msg.role === "user" ? "You" : "Bot"}:
-                          </strong>
-                          <p className="whitespace-pre-line">{msg.content}</p>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                )}
+                <div className="flex-grow overflow-y-auto scroll-smooth my-2 px-2 box-border">
+                  {messages.filter((m) => m.role !== "system").length === 0 ? (
+                    <ul className="flex flex-col gap-2 w-full px-4">
+                      <li className="text-gray-500 text-center italic px-4 w-full max-w-[95%] min-h-[100vh] py-2 rounded-lg text-sm shadow-sm">
+                        No conversation yet. Start by entering a topic.
+                      </li>
+                    </ul>
+                  ) : (
+                    <ul className="flex flex-col gap-2 w-full px-4">
+                      {messages.map((msg, i) => {
+                        const isLast =
+                          i === messages.length - 1 && msg.role === "assistant";
+                        return (
+                          <li
+                            key={msg.content}
+                            ref={isLast ? bottomRef : null}
+                            className={`w-full max-w-[95%] px-4 py-2 rounded-lg text-sm shadow-sm ${
+                              msg.role === "user"
+                                ? "bg-blue-100"
+                                : "bg-gray-100"
+                            }`}
+                          >
+                            <strong className="block text-gray-700 mb-1">
+                              {msg.role === "user" ? "You" : "Bot"}:
+                            </strong>
+                            <p className="whitespace-pre-line">{msg.content}</p>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  )}
+                </div>
               </div>
-            </div>
-          </ResizableBox>
+            </Rnd>
+          </div>
         </div>
       )}
     </div>
