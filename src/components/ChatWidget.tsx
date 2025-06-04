@@ -15,6 +15,7 @@ const ChatWidget = () => {
     messages,
     setMessages,
     createDisclaimer,
+    continueConversation,
   } = useAPIContext();
 
   const [formData, setFormData] = useState({ prompt: "" });
@@ -36,11 +37,25 @@ const ChatWidget = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     const userMsg = { role: "user", content: formData.prompt };
     const updated = [...messages, userMsg];
-    const botReply = await createDisclaimer(updated);
-    setMessages([...updated, { role: "assistant", content: botReply }]);
-    setFormData({ prompt: "" });
+
+    let botReply = "";
+
+    try {
+      if (activeDisclaimerId) {
+        botReply = await continueConversation(updated);
+      } else {
+        botReply = await createDisclaimer(updated);
+      }
+
+      setMessages([...updated, { role: "assistant", content: botReply }]);
+      console.log("review messages", messages);
+      setFormData({ prompt: "" });
+    } catch (error) {
+      console.error("Submission error:", error);
+    }
   };
 
   return (

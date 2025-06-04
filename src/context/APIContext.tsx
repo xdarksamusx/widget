@@ -28,6 +28,9 @@ type APIContextType = {
   createDisclaimer: (
     messages: { role: string; content: string }[]
   ) => Promise<string>;
+  continueConversation: (
+    messages: { role: string; content: string }[]
+  ) => Promise<string>;
 };
 
 const APIContext = createContext<APIContextType | undefined>(undefined);
@@ -47,7 +50,9 @@ export const APIProvider = ({ children }: { children: React.ReactNode }) => {
   const createDisclaimer = async (
     messages: { role: string; content: string }[]
   ): Promise<string> => {
-    const formattedPrompt = [...messages];
+    const formattedPrompt =
+      messages.reverse().find((m) => m.role === "user")?.content || "";
+    console.log("formattedPrompt", typeof formattedPrompt, formattedPrompt);
 
     const res = await fetch(`http://localhost:3000/disclaimers`, {
       method: "POST",
@@ -58,14 +63,18 @@ export const APIProvider = ({ children }: { children: React.ReactNode }) => {
 
       body: JSON.stringify({
         disclaimer: {
-          message: formattedPrompt,
+          user_id: activeDisclaimerId,
+          message: [{ role: "user", content: formattedPrompt }],
+          chat_history: [],
         },
       }),
     });
+    console.log("checking response", res);
     const data = await res.json();
 
     setGeneratedDisclaimer(data.statement);
     setActiveDisclaimerId(data.id);
+    console.log("state,emt", data);
     return data.statement;
   };
 
@@ -83,12 +92,14 @@ export const APIProvider = ({ children }: { children: React.ReactNode }) => {
       );
     } catch (error) {}
   };
-
   const continueConversation = async (
-    activeDisclaimerId: string,
-    message: string
-  ) => {
-    const formattedPrompt = [{ role: "user", content: message }];
+    messages: { role: string; content: string }[]
+  ): Promise<string> => {
+    const formattedPrompt =
+      messages
+        .slice()
+        .reverse()
+        .find((m) => m.role === "user")?.content || "";
 
     try {
       const res = await fetch(
@@ -101,23 +112,18 @@ export const APIProvider = ({ children }: { children: React.ReactNode }) => {
           },
           body: JSON.stringify({
             disclaimer: {
-              message,
+              message: [{ role: "user", content: formattedPrompt }],
+              chat_history: messages,
             },
           }),
         }
       );
       const data = await res.json();
-      return data;
+      console.log("data conversion", data);
+      return data.statement;
     } catch (error) {
       console.error("Error continuing conversation", error);
-
-      return {
-        id: "",
-        topic: "",
-        tone: "",
-        statement: "",
-        chat_history: [],
-      };
+      return "An error occurred. Please try again.";
     }
   };
 
@@ -131,6 +137,7 @@ export const APIProvider = ({ children }: { children: React.ReactNode }) => {
         createDisclaimer,
         messages,
         setMessages,
+        continueConversation,
       }}
     >
       {children}
