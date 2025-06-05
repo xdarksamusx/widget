@@ -16,6 +16,7 @@ const ChatWidget = () => {
     setMessages,
     createDisclaimer,
     continueConversation,
+    downloadConversation,
   } = useAPIContext();
 
   const [formData, setFormData] = useState({ prompt: "" });
@@ -102,6 +103,13 @@ const ChatWidget = () => {
                     />
                     <button className=" bg-blue-600 hover:bg-blue-700 text-white mt-4 mb-4 font-semibold px-4 py-2 rounded-lg shadow-md transition-colors duration-200">
                       Generate
+                    </button>
+
+                    <button
+                      onClick={downloadConversation}
+                      className=" bg-green-600 hover:bg-green-700 text-white mt-4 mb-4 font-semibold px-4 py-2 rounded-lg shadow-md transition-colors duration-200"
+                    >
+                      Download
                     </button>
                   </div>
                 </form>
