@@ -81,32 +81,9 @@ const ChatWidget = () => {
               bounds="window"
             >
               <div className="bg-white shadow-md rounded-lg flex flex-col h-full w-full">
-                <div className="bg-red-600 drag-handle w-full h-6  py-1 flex   items-center justify-begin text-white px-2 cursor-move">
+                <div className="bg-red-500 drag-handle w-full   py-2 flex   items-center justify-begin text-white px-2 cursor-move">
                   <CloseButton onClick={handleCloseButton} />
                 </div>
-
-                <form onSubmit={handleSubmit} className="px-6 pb-2 pt-6 mt-4">
-                  <div className="flex flex-col ">
-                    <textarea
-                      rows={3}
-                      name="prompt"
-                      value={formData.prompt}
-                      onChange={handleChange}
-                      placeholder="Enter a disclaimer topic"
-                      className="w-full resize-none border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400 shadow-sm"
-                    />
-                    <button className=" bg-blue-600 hover:bg-blue-700 text-white mt-4 mb-4 font-semibold px-4 py-2 rounded-lg shadow-md transition-colors duration-200">
-                      Generate
-                    </button>
-
-                    <button
-                      onClick={downloadConversation}
-                      className=" bg-green-600 hover:bg-green-700 text-white mt-4 mb-4 font-semibold px-4 py-2 rounded-lg shadow-md transition-colors duration-200"
-                    >
-                      Download
-                    </button>
-                  </div>
-                </form>
 
                 <div className="flex-grow overflow-y-auto scroll-smooth my-2  box-border mt-4 mb-8  ">
                   {messages.filter((m) => m.role !== "system").length === 0 ? (
@@ -139,6 +116,36 @@ const ChatWidget = () => {
                       })}
                     </ul>
                   )}
+                </div>
+
+                <div className="shrink-0">
+                  <form
+                    onSubmit={handleSubmit}
+                    className="px-6 pb-2 pt-6 mt-4 shrink-0 "
+                  >
+                    <div className="flex flex-col  ">
+                      <textarea
+                        rows={3}
+                        name="prompt"
+                        value={formData.prompt}
+                        onChange={handleChange}
+                        placeholder="Enter a disclaimer topic"
+                        className="w-full resize-none border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400 shadow-sm"
+                      />
+                      <div className="flex justify-center  sm:flex-row gap-3">
+                        <button className=" bg-blue-600 hover:bg-blue-700 text-white mt-4 mb-4 font-semibold px-4 py-2 rounded-lg shadow-md transition-colors duration-200">
+                          Generate
+                        </button>
+
+                        <button
+                          onClick={downloadConversation}
+                          className=" bg-green-600 hover:bg-green-700 text-white mt-4 mb-4 font-semibold px-4 py-2 rounded-lg shadow-md transition-colors duration-200"
+                        >
+                          Download
+                        </button>
+                      </div>
+                    </div>
+                  </form>
                 </div>
               </div>
             </Rnd>
