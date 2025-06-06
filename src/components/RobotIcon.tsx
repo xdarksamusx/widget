@@ -2,7 +2,7 @@ const RobotIcon = () => {
   return (
     <>
       <svg
-        className="w-7 h-7  fill-white"
+        className="w-6 h-10  fill-white"
         xmlns="http://www.w3.org/2000/svg"
         version="1.1"
         viewBox="-5.0 -10.0 110.0 135.0"
@@ -15,9 +15,9 @@ const RobotIcon = () => {
         <text
           x="0.0"
           y="117.5"
-          font-size="5.0"
-          font-weight="bold"
-          font-family="Arbeit Regular, Helvetica, Arial-Unicode, Arial, Sans-serif"
+          fontSize="5.0"
+          fontWeight="bold"
+          fontFamily="Arbeit Regular, Helvetica, Arial-Unicode, Arial, Sans-serif"
           fill="#000000"
         ></text>
         <text
