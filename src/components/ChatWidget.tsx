@@ -87,7 +87,7 @@ const ChatWidget = () => {
               bounds="window"
             >
               <div className="bg-white shadow-md rounded-lg flex flex-col h-full w-full">
-                <div className="bg-rose-600 drag-handle w-full h-6  py-1 flex   items-center justify-begin text-white px-2 cursor-move">
+                <div className="bg-red-600 drag-handle w-full h-6  py-1 flex   items-center justify-begin text-white px-2 cursor-move">
                   <CloseButton onClick={handleCloseButton} />
                 </div>
 
