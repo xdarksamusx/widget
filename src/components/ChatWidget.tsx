@@ -4,6 +4,7 @@ import "react-resizable/css/styles.css";
 import CloseButton from "./CloseButton";
 import { useAPIContext } from "../context/APIContext";
 import { Rnd } from "react-rnd";
+import RobotIcon from "./RobotIcon";
 
 const ChatWidget = () => {
   const bottomRef = useRef<HTMLLIElement | null>(null);
@@ -62,9 +63,13 @@ const ChatWidget = () => {
   return (
     <div className="relative">
       <button
-        className="fixed bottom-4 right-4 bg-blue-600 text-white p-3 rounded-full z-50"
+        className="fixed bottom-4 right-4 bg-blue-400 text-white p-3 rounded-full z-50"
         onClick={() => setIsOpen(!isOpen)}
-      ></button>
+      >
+        <div className="flex justify-center items-center h-5 w-5">
+          <RobotIcon />{" "}
+        </div>
+      </button>
 
       {isOpen && (
         <div className="h-full w-full p-2 box-border">
