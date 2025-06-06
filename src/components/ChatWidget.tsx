@@ -63,7 +63,7 @@ const ChatWidget = () => {
   return (
     <div className="relative">
       <button
-        className="fixed bottom-4 right-4 bg-blue-400 text-white p-3 rounded-full z-50"
+        className="fixed bottom-4 right-4 bg-blue-800 text-white p-3 rounded-full z-50"
         onClick={() => setIsOpen(!isOpen)}
       >
         <div className="flex justify-center items-center h-5 w-5">
@@ -86,7 +86,7 @@ const ChatWidget = () => {
               bounds="window"
             >
               <div className="bg-white shadow-md rounded-lg flex flex-col h-full w-full">
-                <div className="bg-red-500 drag-handle w-full   py-2 flex   items-center justify-begin text-white px-2 cursor-move">
+                <div className="bg-rose-500 drag-handle w-full   py-2 flex   items-center justify-begin text-white px-2 cursor-move">
                   <CloseButton onClick={handleCloseButton} />
                 </div>
 
