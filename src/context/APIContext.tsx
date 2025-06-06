@@ -16,6 +16,8 @@ type Disclaimer = {
 };
 
 type APIContextType = {
+  downloadConversation: () => Promise<void>;
+
   messages: { role: string; content: string }[];
   setMessages: React.Dispatch<
     React.SetStateAction<{ role: string; content: string }[]>
@@ -80,7 +82,7 @@ export const APIProvider = ({ children }: { children: React.ReactNode }) => {
 
   const downloadConversation = async () => {
     try {
-      const res = fetch(
+      const res = await fetch(
         `http://localhost:3000/disclaimers/${activeDisclaimerId}/download_pdf`,
         {
           method: "GET",
@@ -90,7 +92,19 @@ export const APIProvider = ({ children }: { children: React.ReactNode }) => {
           },
         }
       );
-    } catch (error) {}
+
+      const blob = await res.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `disclaimer_${activeDisclaimerId}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.log(error);
+    }
   };
   const continueConversation = async (
     messages: { role: string; content: string }[]
@@ -138,6 +152,7 @@ export const APIProvider = ({ children }: { children: React.ReactNode }) => {
         messages,
         setMessages,
         continueConversation,
+        downloadConversation,
       }}
     >
       {children}

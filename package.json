@@ -45,6 +45,7 @@
     "@types/react-dom": "^19.1.5",
     "@types/react-resizable": "^3.0.8",
     "@types/react-router-dom": "^5.3.3",
+    "ajv": "^7.2.4",
     "autoprefixer": "^10.4.21",
     "postcss": "^8.5.4",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.17",

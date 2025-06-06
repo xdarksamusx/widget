@@ -16,6 +16,7 @@ const ChatWidget = () => {
     setMessages,
     createDisclaimer,
     continueConversation,
+    downloadConversation,
   } = useAPIContext();
 
   const [formData, setFormData] = useState({ prompt: "" });
@@ -31,7 +32,7 @@ const ChatWidget = () => {
 
   const handleCloseButton = () => setIsOpen((prev) => !prev);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
@@ -67,43 +68,24 @@ const ChatWidget = () => {
 
       {isOpen && (
         <div className="h-full w-full p-2 box-border">
-          <div
-            style={{
-              position: "absolute",
-              top: `${position.y}px`,
-              left: `${position.x}px`,
-            }}
-          >
+          <div>
             <Rnd
               default={{
                 x: 150,
                 y: 205,
                 width: 500,
-                height: 190,
+                height: 400,
               }}
               minWidth={500}
               minHeight={190}
               bounds="window"
             >
               <div className="bg-white shadow-md rounded-lg flex flex-col h-full w-full">
-                <div className="bg-red-600 drag-handle w-full h-6 flex items-center justify-end text-white px-2 cursor-move">
+                <div className="bg-red-500 drag-handle w-full   py-2 flex   items-center justify-begin text-white px-2 cursor-move">
                   <CloseButton onClick={handleCloseButton} />
                 </div>
 
-                <form onSubmit={handleSubmit} className="px-4 mt-2">
-                  <input
-                    name="prompt"
-                    value={formData.prompt}
-                    onChange={handleChange}
-                    placeholder="Enter a disclaimer topic"
-                    className="w-36 border rounded py-1 px-2 mb-2"
-                  />
-                  <button className="bg-blue-600 text-white px-3 py-1 rounded ml-2">
-                    Generate
-                  </button>
-                </form>
-
-                <div className="flex-grow overflow-y-auto scroll-smooth my-2 px-2 box-border">
+                <div className="flex-grow overflow-y-auto scroll-smooth my-2  box-border mt-4 mb-8  ">
                   {messages.filter((m) => m.role !== "system").length === 0 ? (
                     <ul className="flex flex-col gap-2 w-full px-4">
                       <li className="text-gray-500 text-center italic px-4 w-full max-w-[95%] min-h-[100vh] py-2 rounded-lg text-sm shadow-sm">
@@ -111,7 +93,7 @@ const ChatWidget = () => {
                       </li>
                     </ul>
                   ) : (
-                    <ul className="flex flex-col gap-2 w-full px-4">
+                    <ul className="flex flex-col gap-2 w-full px-4  mb-4">
                       {messages.map((msg, i) => {
                         const isLast =
                           i === messages.length - 1 && msg.role === "assistant";
@@ -119,7 +101,7 @@ const ChatWidget = () => {
                           <li
                             key={msg.content}
                             ref={isLast ? bottomRef : null}
-                            className={`w-full max-w-[95%] px-4 py-2 rounded-lg text-sm shadow-sm ${
+                            className={` mt-2  w-full max-w-[95%] px-4 py-2 rounded-lg text-sm shadow-sm ${
                               msg.role === "user"
                                 ? "bg-blue-100"
                                 : "bg-gray-100"
@@ -134,6 +116,36 @@ const ChatWidget = () => {
                       })}
                     </ul>
                   )}
+                </div>
+
+                <div className="shrink-0">
+                  <form
+                    onSubmit={handleSubmit}
+                    className="px-6 pb-2 pt-6 mt-4 shrink-0 "
+                  >
+                    <div className="flex flex-col  ">
+                      <textarea
+                        rows={3}
+                        name="prompt"
+                        value={formData.prompt}
+                        onChange={handleChange}
+                        placeholder="Enter a disclaimer topic"
+                        className="w-full resize-none border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400 shadow-sm"
+                      />
+                      <div className="flex justify-center  sm:flex-row gap-3">
+                        <button className=" bg-blue-600 hover:bg-blue-700 text-white mt-4 mb-4 font-semibold px-4 py-2 rounded-lg shadow-md transition-colors duration-200">
+                          Generate
+                        </button>
+
+                        <button
+                          onClick={downloadConversation}
+                          className=" bg-green-600 hover:bg-green-700 text-white mt-4 mb-4 font-semibold px-4 py-2 rounded-lg shadow-md transition-colors duration-200"
+                        >
+                          Download
+                        </button>
+                      </div>
+                    </div>
+                  </form>
                 </div>
               </div>
             </Rnd>
