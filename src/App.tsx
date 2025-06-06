@@ -8,7 +8,7 @@ function App() {
     <div className="App">
       <APIProvider>
         <div className="relative min-h-screen">
-          <div className="text-center mt-4">stuff</div>
+          <div className="text-center mt-4"></div>
           <ChatWidget />
         </div>
       </APIProvider>

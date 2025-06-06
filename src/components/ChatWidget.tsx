@@ -68,13 +68,7 @@ const ChatWidget = () => {
 
       {isOpen && (
         <div className="h-full w-full p-2 box-border">
-          <div
-            style={{
-              position: "absolute",
-              top: `${position.y}px`,
-              left: `${position.x}px`,
-            }}
-          >
+          <div>
             <Rnd
               default={{
                 x: 150,
