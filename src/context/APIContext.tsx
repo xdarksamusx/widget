@@ -60,6 +60,8 @@ export const APIProvider = ({ children }: { children: React.ReactNode }) => {
 
     const res = await fetch(`${baseUrl}/disclaimers`, {
       method: "POST",
+      credentials: "include",
+
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
@@ -88,6 +90,8 @@ export const APIProvider = ({ children }: { children: React.ReactNode }) => {
         `${baseUrl}/disclaimers/${activeDisclaimerId}/download_pdf`,
         {
           method: "GET",
+          credentials: "include",
+
           headers: {
             "Content-Type": "application/json",
             Accept: "application/pdf",
@@ -122,6 +126,8 @@ export const APIProvider = ({ children }: { children: React.ReactNode }) => {
         `${baseUrl}/disclaimers/${activeDisclaimerId}/continue`,
         {
           method: "PATCH",
+          credentials: "include",
+
           headers: {
             "Content-Type": "application/json",
             Accept: "application/json",
