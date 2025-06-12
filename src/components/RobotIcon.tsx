@@ -23,9 +23,9 @@ const RobotIcon = () => {
         <text
           x="0.0"
           y="122.5"
-          font-size="5.0"
-          font-weight="bold"
-          font-family="Arbeit Regular, Helvetica, Arial-Unicode, Arial, Sans-serif"
+          fontSize="5.0"
+          fontWeight="bold"
+          fontFamily="Arbeit Regular, Helvetica, Arial-Unicode, Arial, Sans-serif"
           fill="#000000"
         ></text>
       </svg>

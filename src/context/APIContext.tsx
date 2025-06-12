@@ -1,5 +1,4 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { type } from "@testing-library/user-event/dist/type";
 import React from "react";
 
 type ChatHistory = {
@@ -38,6 +37,9 @@ type APIContextType = {
 const APIContext = createContext<APIContextType | undefined>(undefined);
 
 export const APIProvider = ({ children }: { children: React.ReactNode }) => {
+  const baseUrl = process.env.REACT_APP_API_BASE_URL;
+  console.log("BASE URL:", baseUrl);
+
   const [generatedDisclaimer, setGeneratedDisclaimer] = useState("");
   const [activeDisclaimerId, setActiveDisclaimerId] = useState<string | null>(
     null
@@ -53,11 +55,13 @@ export const APIProvider = ({ children }: { children: React.ReactNode }) => {
     messages: { role: string; content: string }[]
   ): Promise<string> => {
     const formattedPrompt =
-      messages.reverse().find((m) => m.role === "user")?.content || "";
+      [...messages].reverse().find((m) => m.role === "user")?.content || "";
     console.log("formattedPrompt", typeof formattedPrompt, formattedPrompt);
 
-    const res = await fetch(`http://localhost:3000/disclaimers`, {
+    const res = await fetch(`${baseUrl}/disclaimers`, {
       method: "POST",
+      credentials: "include",
+
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
@@ -83,9 +87,11 @@ export const APIProvider = ({ children }: { children: React.ReactNode }) => {
   const downloadConversation = async () => {
     try {
       const res = await fetch(
-        `http://localhost:3000/disclaimers/${activeDisclaimerId}/download_pdf`,
+        `${baseUrl}/disclaimers/${activeDisclaimerId}/download_pdf`,
         {
           method: "GET",
+          credentials: "include",
+
           headers: {
             "Content-Type": "application/json",
             Accept: "application/pdf",
@@ -117,9 +123,11 @@ export const APIProvider = ({ children }: { children: React.ReactNode }) => {
 
     try {
       const res = await fetch(
-        `http://localhost:3000/disclaimers/${activeDisclaimerId}/continue`,
+        `${baseUrl}/disclaimers/${activeDisclaimerId}/continue`,
         {
           method: "PATCH",
+          credentials: "include",
+
           headers: {
             "Content-Type": "application/json",
             Accept: "application/json",
