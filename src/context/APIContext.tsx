@@ -6,14 +6,6 @@ type ChatHistory = {
   content: string;
 };
 
-type Disclaimer = {
-  id: string;
-  topic: string;
-  tone: string;
-  statement: string;
-  chat_history: ChatHistory[];
-};
-
 type APIContextType = {
   downloadConversation: () => Promise<void>;
 
