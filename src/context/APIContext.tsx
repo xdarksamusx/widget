@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useState } from "react";
 import React from "react";
 
 type ChatHistory = {
@@ -25,7 +25,6 @@ type APIContextType = {
   generatedDisclaimer: string;
   activeDisclaimerId: string | null;
   setActiveDisclaimerId: React.Dispatch<React.SetStateAction<string | null>>;
-  setGeneratedDisclaimer: React.Dispatch<React.SetStateAction<string>>;
   createDisclaimer: (
     messages: { role: string; content: string }[]
   ) => Promise<string>;
@@ -45,8 +44,6 @@ export const APIProvider = ({ children }: { children: React.ReactNode }) => {
     null
   );
 
-  const [disclaimers, setDisclaimers] = useState<Disclaimer[]>([]);
-  const [isOpen, setIsOpen] = useState<boolean>(false);
   const [messages, setMessages] = useState<{ role: string; content: string }[]>(
     []
   );
@@ -78,7 +75,6 @@ export const APIProvider = ({ children }: { children: React.ReactNode }) => {
     console.log("checking response", res);
     const data = await res.json();
 
-    setGeneratedDisclaimer(data.statement);
     setActiveDisclaimerId(data.id);
     console.log("state,emt", data);
     return data.statement;
@@ -153,7 +149,6 @@ export const APIProvider = ({ children }: { children: React.ReactNode }) => {
     <APIContext.Provider
       value={{
         generatedDisclaimer,
-        setGeneratedDisclaimer,
         activeDisclaimerId,
         setActiveDisclaimerId,
         createDisclaimer,

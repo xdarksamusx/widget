@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import { ResizableBox } from "react-resizable";
 import "react-resizable/css/styles.css";
 import CloseButton from "./CloseButton";
 import { useAPIContext } from "../context/APIContext";
@@ -10,9 +9,8 @@ const ChatWidget = () => {
   const bottomRef = useRef<HTMLLIElement | null>(null);
   const {
     generatedDisclaimer,
-    setGeneratedDisclaimer,
+
     activeDisclaimerId,
-    setActiveDisclaimerId,
     messages,
     setMessages,
     createDisclaimer,
@@ -22,10 +20,6 @@ const ChatWidget = () => {
 
   const [formData, setFormData] = useState({ prompt: "" });
   const [isOpen, setIsOpen] = useState(true);
-  const [position, setPosition] = useState({
-    x: window.innerWidth / 2 - 160,
-    y: window.innerHeight / 4,
-  });
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
