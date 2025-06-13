@@ -3,7 +3,7 @@ nixPkgs = ["nodejs"]
 
 [phases.build]
 cmds = [
-  "rm -rf node_modules/.cache || true",
+  "rm -rf /app/node_modules/.cache || true",
   "npm ci --legacy-peer-deps",
   "npm run build"
 ]
