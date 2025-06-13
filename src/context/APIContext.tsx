@@ -1,11 +1,6 @@
 import { createContext, useContext, useState } from "react";
 import React from "react";
 
-type ChatHistory = {
-  role: string;
-  content: string;
-};
-
 type APIContextType = {
   downloadConversation: () => Promise<void>;
 
