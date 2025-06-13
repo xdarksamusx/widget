@@ -8,8 +8,6 @@ import RobotIcon from "./RobotIcon";
 const ChatWidget = () => {
   const bottomRef = useRef<HTMLLIElement | null>(null);
   const {
-    generatedDisclaimer,
-
     activeDisclaimerId,
     messages,
     setMessages,

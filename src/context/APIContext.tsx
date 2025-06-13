@@ -22,7 +22,6 @@ type APIContextType = {
     React.SetStateAction<{ role: string; content: string }[]>
   >;
 
-  generatedDisclaimer: string;
   activeDisclaimerId: string | null;
   setActiveDisclaimerId: React.Dispatch<React.SetStateAction<string | null>>;
   createDisclaimer: (
@@ -39,7 +38,6 @@ export const APIProvider = ({ children }: { children: React.ReactNode }) => {
   const baseUrl = process.env.REACT_APP_API_BASE_URL;
   console.log("BASE URL:", baseUrl);
 
-  const [generatedDisclaimer, setGeneratedDisclaimer] = useState("");
   const [activeDisclaimerId, setActiveDisclaimerId] = useState<string | null>(
     null
   );
@@ -148,7 +146,6 @@ export const APIProvider = ({ children }: { children: React.ReactNode }) => {
   return (
     <APIContext.Provider
       value={{
-        generatedDisclaimer,
         activeDisclaimerId,
         setActiveDisclaimerId,
         createDisclaimer,
