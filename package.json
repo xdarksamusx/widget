@@ -18,7 +18,7 @@
   },
   "scripts": {
     "start": "react-app-rewired start",
-    "build": "REACT_APP_DISABLE_REFRESH=true react-app-rewired build --omit=dev",
+    "build": "rm -rf node_modules/.cache && REACT_APP_DISABLE_REFRESH=true react-app-rewired build --omit=dev",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "open:test": "open http://localhost:3001/test.html"
@@ -54,6 +54,7 @@
     "postcss": "^8.5.4",
     "react-app-rewired": "^2.2.1",
     "react-refresh": "^0.17.0",
+    "serve": "^14.2.4",
     "tailwindcss": "^3.4.1",
     "typescript": "^4.9.5",
     "vite": "^6.3.5"
